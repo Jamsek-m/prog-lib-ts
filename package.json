@@ -1,0 +1,64 @@
+{
+    "name": "@mjamsek/prog-utils",
+    "version": "0.3.0",
+    "description": "Utility library providing type definitions.",
+    "keywords": [
+        "mjamsek",
+        "optional",
+        "entity list"
+    ],
+    "main": "./dist/prog-utils.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist/**/*"
+    ],
+    "scripts": {
+        "lint": "tslint -p .",
+        "lint:fix": "tslint -p . --fix",
+        "compile": "tsc",
+        "build": "webpack",
+        "test": "mocha -r ts-node/register 'tests/**/*.test.ts'",
+        "coverage": "nyc npm run test",
+        "prepublishOnly": "npm run build"
+    },
+    "author": {
+        "name": "Miha Jamšek",
+        "url": "https://github.com/Jamsek-m",
+        "email": "miha_jamsek@windowslive.com"
+    },
+    "maintainers": [
+        {
+            "name": "Miha Jamšek",
+            "url": "https://github.com/Jamsek-m",
+            "email": "miha_jamsek@windowslive.com"
+        }
+    ],
+    "repository": {
+        "url": "https://github.com/Jamsek-m/ts-prog-utils",
+        "type": "git"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://nexus.mjamsek.com/repository/npm-snapshots/"
+    },
+    "bugs": {
+        "url": "https://github.com/Jamsek-m/ts-prog-utils/issues"
+    },
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {
+        "@types/chai": "^4.3.1",
+        "@types/mocha": "^9.1.1",
+        "chai": "^4.3.6",
+        "clean-webpack-plugin": "~4.0.0",
+        "mocha": "^10.0.0",
+        "nyc": "^15.1.0",
+        "terser-webpack-plugin": "~5.3.1",
+        "ts-loader": "~9.3.0",
+        "ts-node": "^10.7.0",
+        "tslint": "~6.1.3",
+        "typescript": "~4.0.5",
+        "webpack": "~5.72.0",
+        "webpack-cli": "~4.9.2"
+    }
+}

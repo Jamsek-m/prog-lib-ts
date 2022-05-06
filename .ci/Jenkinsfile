@@ -1,0 +1,69 @@
+pipeline {
+
+    agent any
+
+    tools {
+        nodejs "node-14"
+    }
+
+    environment {
+        COMMIT_AUTHOR = ""
+        COMMIT_MESSAGE = ""
+        PROJECT_VERSION = ""
+        COMMIT_URL = ""
+    }
+
+    stages {
+        stage("Setting environment") {
+            steps {
+                script {
+                    packageFile = readJSON file: 'package.json'
+                    PROJECT_VERSION = packageFile.version
+                    COMMIT_MESSAGE = sh script: "git show -s --pretty='%s'", returnStdout: true
+                    COMMIT_MESSAGE = COMMIT_MESSAGE.trim()
+                    COMMIT_AUTHOR = sh script: "git show -s --pretty='%cn <%ce>'", returnStdout: true
+                    COMMIT_AUTHOR = COMMIT_AUTHOR.trim()
+                    COMMIT_URL = GIT_URL + "/commit/" + GIT_COMMIT
+                }
+            }
+        }
+        stage("Installing dependencies") {
+            steps {
+                sh "rm package-lock.json"
+                withNPM(npmrcConfig: 'npm-public-file') {
+                    sh "npm install"
+                }
+            }
+        }
+        stage("Linting") {
+            steps {
+                sh "npm run lint"
+            }
+        }
+        stage("Running tests") {
+            steps {
+                sh "npm run test"
+            }
+        }
+        stage("Building library") {
+            steps {
+                sh "npm run build"
+            }
+        }
+        stage("Deploying snapshot") {
+            steps {
+                withNPM(npmrcConfig: 'npm-snapshots') {
+                    sh "npm publish"
+                }
+            }
+        }
+    }
+    post {
+        success {
+            slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME}' [<${env.BUILD_URL}|${env.BUILD_NUMBER}>]:\n'<${COMMIT_URL}|${COMMIT_MESSAGE}>' _from ${COMMIT_AUTHOR}_")
+        }
+        failure {
+            slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME}' [<${env.BUILD_URL}|${env.BUILD_NUMBER}>]:\n'<${COMMIT_URL}|${COMMIT_MESSAGE}>' _from ${COMMIT_AUTHOR}_")
+        }
+    }
+}
