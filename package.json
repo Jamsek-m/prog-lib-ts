@@ -34,7 +34,7 @@
         }
     ],
     "repository": {
-        "url": "https://github.com/Jamsek-m/ts-prog-utils",
+        "url": "https://github.com/Jamsek-m/prog-lib-ts",
         "type": "git"
     },
     "publishConfig": {
@@ -42,7 +42,7 @@
         "registry": "https://nexus.mjamsek.com/repository/npm-snapshots/"
     },
     "bugs": {
-        "url": "https://github.com/Jamsek-m/ts-prog-utils/issues"
+        "url": "https://github.com/Jamsek-m/prog-lib-ts/issues"
     },
     "license": "MIT",
     "dependencies": {},
