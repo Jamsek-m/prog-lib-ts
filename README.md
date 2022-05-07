@@ -1,6 +1,6 @@
 # Prog Utils
 [![npm (scoped)](https://img.shields.io/npm/v/@mjamsek/prog-utils)](https://www.npmjs.com/package/@mjamsek/prog-utils)
-[![GitHub license](https://img.shields.io/github/license/Jamsek-m/ts-prog-utils)](https://github.com/Jamsek-m/prog-lib-ts/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/Jamsek-m/prog-lib-ts)](https://github.com/Jamsek-m/prog-lib-ts/blob/master/LICENSE)
 > Utility library providing type definitions.
 
 ## Installation
