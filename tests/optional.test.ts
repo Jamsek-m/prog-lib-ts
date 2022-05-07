@@ -1,5 +1,6 @@
 import { describe, it } from "mocha";
 import { expect } from "chai";
+
 import { Optional } from "../src";
 import PredicateFunction = Optional.PredicateFunction;
 import ConsumerFunction = Optional.ConsumerFunction;
@@ -49,7 +50,7 @@ describe("Create object", () => {
     
         const onPresent = () => {
             done();
-        }
+        };
         const neverInvoked = () => {
             done(new Error("Should not be invoked!"));
         };
@@ -68,14 +69,14 @@ describe("Create object", () => {
     it("Check if successful callback", done => {
         const onPresent = () => {
             done();
-        }
+        };
         Optional.of(123).ifPresent(onPresent);
     });
     
     it("Check if successful callback", done => {
         const onPresent = () => {
             done();
-        }
+        };
         const neverInvoked = () => {
             done(new Error("Should not be invoked!"));
         };
@@ -85,7 +86,7 @@ describe("Create object", () => {
     it("Check if errored callback", done => {
         const onPresent = () => {
             done();
-        }
+        };
         const neverInvoked = () => {
             done(new Error("Should not be invoked!"));
         };
@@ -167,7 +168,7 @@ describe("Create object", () => {
     it("Fail on missing value", () => {
         const errorSupplier = () => {
             return new RangeError("Error!");
-        }
+        };
         const nullErrorSupplier = () => {
             return undefined;
         };

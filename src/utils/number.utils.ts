@@ -5,7 +5,7 @@
  */
 export function isInteger(value: unknown): boolean {
     if (isNumber(value)) {
-        return Number.isInteger(parseFloat(value as any));
+        return Number.isInteger(parseFloat(value as string));
     }
     return false;
 }
