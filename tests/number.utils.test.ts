@@ -20,6 +20,16 @@ describe("isFloat(num)", () => {
         expect(isFloat(0)).to.false;
         expect(isFloat(0.0)).to.false;
     });
+    
+    it("Shouldn't accept booleans", () => {
+        expect(isFloat(false)).to.false;
+        expect(isFloat(true)).to.false;
+    });
+    
+    it("Shouldn't accept non-numbers", () => {
+        expect(isFloat(NaN)).to.false;
+        expect(isFloat("test")).to.false;
+    });
 });
 
 describe("isInteger(num)", () => {
@@ -37,6 +47,16 @@ describe("isInteger(num)", () => {
     it("Should accept zero", () => {
         expect(isInteger(0)).to.true;
         expect(isInteger(0.0)).to.true;
+    });
+    
+    it("Shouldn't accept booleans", () => {
+        expect(isInteger(false)).to.be.false;
+        expect(isInteger(true)).to.be.false;
+    });
+    
+    it("Shouldn't accept non-numbers", () => {
+        expect(isInteger(NaN)).to.be.false;
+        expect(isInteger("test")).to.be.false;
     });
     
 });
@@ -58,6 +78,10 @@ describe("stringIsInteger(num)", () => {
         expect(stringIsInteger("0.0")).to.false;
     });
     
+    it("Shouldn't accept empty strings", () => {
+        expect(stringIsInteger("")).to.false;
+        expect(stringIsInteger(undefined as unknown as string)).to.false;
+    });
 });
 
 describe("isNumber(num)", () => {

@@ -10,12 +10,17 @@ describe("Create error", () => {
         expect(err instanceof BaseError).to.be.true;
         expect(err.message).to.be.equals("server_error");
         expect(err.type).to.be.equals(HttpError);
+        expect(err.cause).to.be.null;
     });
     
     it("Create http error from cause", () => {
         const prevErr = new ReferenceError("Http return empty!");
         const err = new HttpError(500, "server_error", prevErr);
         expect(err.cause).to.be.equals(prevErr);
+        expect(err.status).to.be.equals(500);
+        expect(err instanceof BaseError).to.be.true;
+        expect(err.message).to.be.equals("server_error");
+        expect(err.type).to.be.equals(HttpError);
     });
     
     it("Create unknown error", () => {

@@ -39,7 +39,7 @@ describe("Create object", () => {
         expect(() => emptyOpt.get()).to.throw(ReferenceError);
     });
     
-    it("Check if present", done => {
+    it("Check if present", () => {
         const opt = Optional.ofNullable(123);
         const emptyOpt = Optional.empty<number>();
         
@@ -48,22 +48,54 @@ describe("Create object", () => {
         expect(emptyOpt.isPresent()).to.be.false;
         expect(emptyOpt.isEmpty()).to.be.true;
     
+        let invoked = false;
         const onPresent = () => {
-            done();
+            invoked = true;
+        };
+        const returnAndResetInvocation = () => {
+            const result = invoked;
+            invoked = false;
+            return result;
         };
         const neverInvoked = () => {
-            done(new Error("Should not be invoked!"));
+            throw new Error("Should not be invoked!");
         };
         
-        expect(() => opt.ifPresent(null as unknown as ConsumerFunction<number>)).to.throw(ReferenceError);
-        expect(() => opt.ifPresentOrElse(null as unknown as ConsumerFunction<number>, neverInvoked)).to.throw(ReferenceError);
-        expect(() => opt.ifPresentOrElse(onPresent, null as unknown as EmptyFunction)).to.throw(ReferenceError);
-        expect(() => opt.ifPresentOrElse(null as unknown as ConsumerFunction<number>, null as unknown as EmptyFunction)).to.throw(ReferenceError);
+        expect(() => {
+            opt.ifPresent(null as unknown as ConsumerFunction<number>);
+            return returnAndResetInvocation();
+        }).to.throw(ReferenceError);
         
-        expect(() => emptyOpt.ifPresent(null as unknown as ConsumerFunction<number>)).to.throw(ReferenceError);
-        expect(() => emptyOpt.ifPresentOrElse(null as unknown as ConsumerFunction<number>, neverInvoked)).to.throw(ReferenceError);
-        expect(() => emptyOpt.ifPresentOrElse(onPresent, null as unknown as EmptyFunction)).to.throw(ReferenceError);
-        expect(() => emptyOpt.ifPresentOrElse(null as unknown as ConsumerFunction<number>, null as unknown as EmptyFunction)).to.throw(ReferenceError);
+        expect(() => {
+            opt.ifPresentOrElse(null as unknown as ConsumerFunction<number>, neverInvoked);
+            return returnAndResetInvocation();
+        }).to.throw(ReferenceError);
+    
+        opt.ifPresentOrElse(onPresent, null as unknown as EmptyFunction);
+        expect(returnAndResetInvocation()).to.be.true;
+        
+        expect(() => {
+            opt.ifPresentOrElse(null as unknown as ConsumerFunction<number>, null as unknown as EmptyFunction);
+            return returnAndResetInvocation();
+        }).to.throw(ReferenceError);
+        
+        expect(() => {
+            emptyOpt.ifPresent(null as unknown as ConsumerFunction<number>);
+            return returnAndResetInvocation();
+        }).to.not.throw(ReferenceError);
+    
+        emptyOpt.ifPresentOrElse(null as unknown as ConsumerFunction<number>, onPresent);
+        expect(returnAndResetInvocation()).to.be.true;
+        
+        expect(() => {
+            emptyOpt.ifPresentOrElse(onPresent, null as unknown as EmptyFunction);
+            return returnAndResetInvocation();
+        }).to.throw(ReferenceError);
+        
+        expect(() => {
+            emptyOpt.ifPresentOrElse(null as unknown as ConsumerFunction<number>, null as unknown as EmptyFunction);
+            return returnAndResetInvocation();
+        }).to.throw(ReferenceError);
     });
     
     it("Check if successful callback", done => {
