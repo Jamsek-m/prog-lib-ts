@@ -18,6 +18,11 @@ export abstract class BaseError extends Error {
         
     }
     
+    public set type(type: Type) {
+        this._type = type;
+        Object.setPrototypeOf(this, type.prototype);
+    }
+    
     public get type(): Type {
         return this._type;
     }
