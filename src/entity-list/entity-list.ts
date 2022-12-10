@@ -53,7 +53,7 @@ export class EntityList<E> {
             throw new ReferenceError("entities must not be null!");
         }
         let entityCount = entities.length;
-        if (count) {
+        if (count !== undefined && count !== null) {
             entityCount = count;
         }
         
@@ -63,10 +63,10 @@ export class EntityList<E> {
     private constructor(entities: E[], count: number, limit?: number, offset?: number) {
         this._entities = entities;
         this._count = count;
-        if (limit) {
+        if (limit !== undefined && limit !== null) {
             this._limit = limit;
         }
-        if (offset) {
+        if (offset !== undefined && offset !== null) {
             this._offset = offset;
         }
     }

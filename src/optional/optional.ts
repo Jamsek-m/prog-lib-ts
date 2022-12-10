@@ -27,7 +27,7 @@ export class Optional<T> {
     private readonly value: T | null;
     
     private constructor(value?: T) {
-        this.value = value || null;
+        this.value = value ?? null;
     }
     
     /**
@@ -45,7 +45,7 @@ export class Optional<T> {
      * @returns an {@link Optional} with the value present
      */
     public static of<T>(value: T): Optional<T> {
-        if (value) {
+        if (value !== undefined && value !== null) {
             return new Optional<T>(value);
         }
         throw new ReferenceError("Value must not be null!");
@@ -57,7 +57,7 @@ export class Optional<T> {
      * @returns an {@link Optional} with a present value if the specified value is non-null, otherwise an empty {@link Optional}
      */
     public static ofNullable<T>(value: T | undefined | null): Optional<T> {
-        if (value) {
+        if (value !== undefined && value !== null) {
             return Optional.of(value);
         }
         return Optional.empty();
@@ -69,7 +69,7 @@ export class Optional<T> {
      * @throws {ReferenceError} if no value is present
      */
     public get(): T {
-        if (this.value) {
+        if (this.value !== undefined && this.value !== null) {
             return this.value;
         }
         throw new ReferenceError("No value present!");
@@ -80,7 +80,7 @@ export class Optional<T> {
      * @returns <code>true</code> if a value is present, otherwise <code>false</code>
      */
     public isPresent(): boolean {
-        return !!this.value;
+        return this.value !== undefined && this.value !== null;
     }
     
     /**
@@ -88,7 +88,7 @@ export class Optional<T> {
      * @returns <code>true</code> if a value is not present, otherwise <code>false</code>
      */
     public isEmpty(): boolean {
-        return !this.value;
+        return this.value === undefined || this.value === null;
     }
     
     /**
@@ -97,7 +97,7 @@ export class Optional<T> {
      * @throws {ReferenceError} if value is present and the given action is null
      */
     public ifPresent(action: Optional.ConsumerFunction<T>): void {
-        if (this.value) {
+        if (this.value !== undefined && this.value !== null) {
             if (action) {
                 action(this.value);
             } else {
@@ -113,7 +113,7 @@ export class Optional<T> {
      * @throws {ReferenceError} if a value is present and the given action is null, or no value is present and the given empty-based action is null.
      */
     public ifPresentOrElse(action: Optional.ConsumerFunction<T>, emptyAction: Optional.EmptyFunction): void {
-        if (this.value) {
+        if (this.value !== undefined && this.value !== null) {
             if (action) {
                 action(this.value);
             } else {
@@ -137,7 +137,7 @@ export class Optional<T> {
      * @throws {ReferenceError} if the predicate is null
      */
     public filter(predicate: Optional.PredicateFunction<T>): Optional<T> {
-        if (!this.value) {
+        if (this.value === undefined || this.value === null) {
             return this;
         }
         if (!predicate) {
@@ -159,7 +159,7 @@ export class Optional<T> {
      * @throws {ReferenceError} if the mapping function is null
      */
     public map<U>(mapper: Optional.MapFunction<T, U>): Optional<U> {
-        if (!this.value) {
+        if (this.value === undefined || this.value === null) {
             return Optional.empty();
         }
         if (!mapper) {
@@ -175,7 +175,7 @@ export class Optional<T> {
      * @throws {ReferenceError} if the supplying function is null or produces a null result
      */
     public or(supplier: Optional.SupplierFunction<T>): Optional<T> {
-        if (this.value) {
+        if (this.value !== undefined && this.value !== null) {
             return this;
         }
         if (!supplier) {
@@ -195,7 +195,7 @@ export class Optional<T> {
      * @returns the value, if present, otherwise <code>other</code>
      */
     public orElse(other: T): T {
-        return this.value ? this.value : other;
+        return (this.value !== undefined && this.value !== null) ? this.value : other;
     }
     
     /**
@@ -208,7 +208,7 @@ export class Optional<T> {
      * @throws {ReferenceError} if no value is present and the exception supplying function returned null exception
      */
     public orElseThrow<E extends Error>(exceptionSupplier?: Optional.ExceptionSupplierFunction<E>): T {
-        if (this.value) {
+        if (this.value !== undefined && this.value !== null) {
             return this.value;
         }
         if (exceptionSupplier) {
@@ -234,7 +234,7 @@ export class Optional<T> {
      * @throws {ReferenceError} if the mapping function is <code>null</code> or returns a <code>null</code> result
      */
     public flatMap(mapper: Optional.MapFunction<T, Optional<T>>): Optional<T> {
-        if (!this.value) {
+        if (this.value === undefined || this.value === null) {
             return Optional.EMPTY as unknown as Optional<T>;
         }
         if (!mapper) {
